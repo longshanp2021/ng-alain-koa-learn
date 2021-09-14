@@ -31,7 +31,16 @@ export class HomeComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+  }
+
+  public onValueChange(value: Date): void {
+    console.log(`Current value: ${value}`);
+  }
+
+  public onPanelChange(change: { date: Date; mode: string }): void {
+    console.log(`Current value: ${change.date}`);
+    console.log(`Current mode: ${change.mode}`);
   }
 
 }

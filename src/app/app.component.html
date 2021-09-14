@@ -1,2 +1,12 @@
-<ul routerLink="/water-supervise"></ul>
-<router-outlet></router-outlet>
+<div class="items">
+    <div style="background-color:black;height: 110px; width: 100%;"> </div>
+    <div class="buttons">
+        <button nz-button nzType="primary" routerLink="/home" routerLinkActive="active">首页</button>
+        <button nz-button nzType="primary" routerLink="/supervise-project" routerLinkActive="active">督查计划</button>
+        <button nz-button nzType="primary" routerLink="/content" routerLinkActive="active">督查填报</button>
+        <button nz-button nzType="primary" routerLinkActive="active">发现问题</button>
+        <button nz-button nzType="primary" routerLinkActive="active">问题整改</button>
+        <button nz-button nzType="primary" routerLinkActive="active">督查报告</button>
+    </div>
+    <router-outlet></router-outlet>
+</div>

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ContentComponent } from './components/content/content.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
+import { SuperviseProjectComponent } from './components/supervise-project/supervise-project.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path: 'content',
     component: ContentComponent
+  },
+  {
+    path: 'supervise-project',
+    component: SuperviseProjectComponent
   },
   { path: '**', redirectTo: 'home' },
 ];
