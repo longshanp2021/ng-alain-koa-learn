@@ -1,0 +1,27 @@
+<button class="btn" nz-button [nzType]="'primary'" (click)="showModal()"><span>新增</span></button>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="新增一位老师" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <ng-container *nzModalContent>
+    <input class="ipt" nz-input placeholder="请输入名字" />
+    <br />
+    <input class="ipt" nz-input placeholder="请输入年龄" />
+    <br />
+    <input class="ipt" nz-input placeholder="请输入性别" />
+    <br />
+  </ng-container>
+</nz-modal>
+<st #st [data]="users" [columns]="columns">
+  <ng-template st-row="nameTpl" let-item let-index="index">
+    <input *ngIf="item.edit" nz-input [ngModel]="item.name" (ngModelChange)="st.setRow(index, { name: $event })" />
+    <ng-container *ngIf="!item.edit">{{ item.name }}</ng-container>
+  </ng-template>
+
+  <ng-template st-row="ageTpl" let-item let-index="index">
+    <nz-input-number *ngIf="item.edit" [ngModel]="item.age" (ngModelChange)="st.setRow(index, { age: $event })"> </nz-input-number>
+    <ng-container *ngIf="!item.edit">{{ item.age }}</ng-container>
+  </ng-template>
+
+  <ng-template st-row="genderTpl" let-item let-index="index">
+    <input *ngIf="item.edit" nz-input [ngModel]="item.gender" (ngModelChange)="st.setRow(index, { gender: $event })" />
+    <ng-container *ngIf="!item.edit">{{ item.gender }}</ng-container>
+  </ng-template>
+</st>
