@@ -31,8 +31,8 @@ export class UserLoginComponent implements OnDestroy {
     private cdr: ChangeDetectorRef
   ) {
     this.form = fb.group({
-      userName: ['user', [Validators.required, Validators.pattern(/^(admin|user)$/)]],
-      password: ['ng-alain.com', [Validators.required, Validators.pattern(/^(ng\-alain\.com)$/)]],
+      userName: ['pu123456', [Validators.required]],
+      password: ['123456', [Validators.required]],
       mobile: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
       captcha: [null, [Validators.required]],
       remember: [true]
@@ -110,10 +110,12 @@ export class UserLoginComponent implements OnDestroy {
     // 然一般来说登录请求不需要校验，因此可以在请求URL加上：`/login?_allow_anonymous=true` 表示不触发用户 Token 校验
     this.loading = true;
     this.cdr.detectChanges();
+    // console.log(1);
+
     this.http
-      .post('/login/account?_allow_anonymous=true', {
+      .post('api/auth/login', {
         type: this.type,
-        userName: this.userName.value,
+        username: this.userName.value,
         password: this.password.value
       })
       .pipe(
@@ -123,25 +125,30 @@ export class UserLoginComponent implements OnDestroy {
         })
       )
       .subscribe(res => {
-        if (res.msg !== 'ok') {
-          this.error = res.msg;
-          this.cdr.detectChanges();
-          return;
-        }
-        // 清空路由复用信息
+        // if (!res.access_token) {
+        //   this.error = res.msg;
+        //   this.cdr.detectChanges();
+        //   return;
+        // }
+        // // 清空路由复用信息
         this.reuseTabService.clear();
-        // 设置用户Token信息
-        // TODO: Mock expired value
-        res.user.expired = +new Date() + 1000 * 60 * 5;
-        this.tokenService.set(res.user);
+        // // 设置用户Token信息
+        // // TODO: Mock expired value
+        // res.user.expired = +new Date() + 1000 * 60 * 5;
+        const tokenInfo = {
+          token: res.access_token,
+          expired: res.expired
+        };
+        this.tokenService.set(tokenInfo);
+        // console.log(0,this.tokenService.get());
+
         // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
-        this.startupSrv.load().subscribe(() => {
-          let url = this.tokenService.referrer!.url || '/';
-          if (url.includes('/passport')) {
-            url = '/';
-          }
-          this.router.navigateByUrl(url);
-        });
+        // this.startupSrv.load().subscribe(() => {
+        let url = this.tokenService.referrer!.url || '/';
+        if (url.includes('/passport')) {
+          url = '/';
+        }
+        this.router.navigateByUrl(url);
       });
   }
 
